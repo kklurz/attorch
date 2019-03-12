@@ -100,19 +100,17 @@ def alternate(*args):
         yield from row
 
 
-def cycle_datasets(trainloaders, **kwargs):
+def cycle_datasets(trainloaders):
     """
     Cycles through datasets of train loaders.
 
     Args:
         trainloaders: OrderedDict with trainloaders as values
-        **kwargs: those arguments will be passed to `attorch.dataset.to_variable`
 
     Yields:
         readout key, input, targets
 
     """
     assert isinstance(trainloaders, OrderedDict), 'trainloaders must be an ordered dict'
-    for readout_key, outputs in zip(cycle(trainloaders.keys()),
-                                     to_variable(alternate(*trainloaders.values()), **kwargs)):
+    for readout_key, outputs in zip(cycle(trainloaders.keys()), alternate(*trainloaders.values())):
         yield (readout_key,) + outputs
